@@ -1,0 +1,96 @@
+version: '3.7'
+services:
+  ansible:
+    hostname: vm-ansible
+    extra_hosts:
+      - vm-formations:host-gateway
+    build:
+       context: ./ansible/image
+       args:
+         UID: ${UID:-1000}
+    image: ansible
+      #    security_opt:
+      #       - seccomp:unconfined
+    volumes:
+       - /etc/localtime:/etc/localtime:ro 
+       - /etc/timezone:/etc/timezone:ro
+       - ./ansible/id_rsa:/home/demo/.ssh/id_rsa 
+       - ./ansible/id_rsa.pub:/home/demo/.ssh/id_rsa.pub
+       - ./ansible/authorized_keys:/home/demo/.ssh/authorized_keys
+       - ./ansible/workdir:/home/demo/workdir
+      #privileged: true
+      #    cap_add:
+      #         - SYS_ADMIN 
+      #         - NET_ADMIN 
+
+  custom_debian1:
+    hostname: vm-custom_debian1
+    build:
+       context: ./custom-debian/image
+       args:
+         UID: ${UID:-1000}
+    image: custom-debian
+    volumes:
+       - /etc/localtime:/etc/localtime:ro
+       - /etc/timezone:/etc/timezone:ro
+       - ./custom-debian/authorized_keys:/home/demo/.ssh/authorized_keys
+
+  custom_debian2:
+    hostname: vm-custom_debian2
+    build:
+       context: ./custom-debian/image
+       args:
+         UID: ${UID:-1000}
+    image: custom-debian
+    volumes:
+       - /etc/localtime:/etc/localtime:ro
+       - /etc/timezone:/etc/timezone:ro
+       - ./custom-debian/authorized_keys:/home/demo/.ssh/authorized_keys
+
+  custom_debian3:
+    hostname: vm-custom_debian3
+    build:
+       context: ./custom-debian/image
+       args:
+         UID: ${UID:-1000}
+    image: custom-debian
+    volumes:
+       - /etc/localtime:/etc/localtime:ro
+       - /etc/timezone:/etc/timezone:ro
+       - ./custom-debian/authorized_keys:/home/demo/.ssh/authorized_keys
+  
+  server1:
+    hostname: vm-server1
+    build:
+       context: ./custom-debian/image
+       args:
+         UID: ${UID:-1000}
+    image: custom-debian
+    volumes:
+       - /etc/localtime:/etc/localtime:ro
+       - /etc/timezone:/etc/timezone:ro
+       - ./custom-debian/authorized_keys:/home/demo/.ssh/authorized_keys
+  
+  vm-postgresql:
+    hostname: vm-postgresql
+    build:
+       context: ./custom-debian/image
+       args:
+         UID: ${UID:-1000}
+    image: custom-debian
+    volumes:
+       - /etc/localtime:/etc/localtime:ro
+       - /etc/timezone:/etc/timezone:ro
+       - ./custom-debian/authorized_keys:/home/demo/.ssh/authorized_keys
+  
+  vm-app:
+    hostname: vm-app
+    build:
+       context: ./custom-debian/image
+       args:
+         UID: ${UID:-1000}
+    image: custom-debian
+    volumes:
+       - /etc/localtime:/etc/localtime:ro
+       - /etc/timezone:/etc/timezone:ro
+       - ./custom-debian/authorized_keys:/home/demo/.ssh/authorized_keys
